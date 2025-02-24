@@ -6,7 +6,7 @@ function Leaderboard() {
   const [filteredLeaderboard, setFilteredLeaderboard] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const API_URL = "http://localhost:8080/leaderboard";
+  const API_URL = "http://localhost:8080";
   const CURRENT_USER_ID = "123"; // Replace with actual user ID from authentication
 
   useEffect(() => {

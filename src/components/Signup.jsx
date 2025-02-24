@@ -25,21 +25,24 @@ function Signup() {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost:8080/user/signup", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/signup`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
-            const data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                data = {};
+            }
 
             if (response.ok) {
                 setMessage("User registered successfully!");
-                setTimeout(() => navigate("/login"), 2000); // Redirect after 2 seconds
+                setTimeout(() => navigate("/login"), 2000);
             } else {
-                setError(data.message || "Signup failed.");
+                setError(data?.message || "Signup failed. Please check your input.");
             }
         } catch (err) {
             setError("Something went wrong. Please try again.");
@@ -57,7 +60,7 @@ function Signup() {
         >
             <div className="absolute inset-0 bg-black/10"></div>
 
-            <div className="relative z-10 h-auto w-[30%] max-w-[450px] rounded-xl bg-white/10 backdrop-blur-xl flex flex-col justify-center items-center gap-6 p-8 border border-white/20">
+            <div className="relative z-10 w-[30%] max-w-[450px] rounded-xl bg-white/10 backdrop-blur-xl flex flex-col justify-center items-center gap-6 p-8 border border-white/20">
                 <h2 className="text-2xl font-semibold text-white">Create an Account</h2>
 
                 {message && <p className="text-green-400">{message}</p>}
@@ -65,7 +68,6 @@ function Signup() {
 
                 <form className="w-full flex flex-col items-center gap-5" onSubmit={handleSubmit}>
                     <div className="w-[85%]">
-                        <label htmlFor="userName" className="sr-only">Username</label>
                         <input
                             type="text"
                             id="userName"
@@ -78,7 +80,6 @@ function Signup() {
                         />
                     </div>
                     <div className="w-[85%]">
-                        <label htmlFor="userGmail" className="sr-only">Email</label>
                         <input
                             type="email"
                             id="userGmail"
@@ -91,7 +92,6 @@ function Signup() {
                         />
                     </div>
                     <div className="w-[85%]">
-                        <label htmlFor="password" className="sr-only">Password</label>
                         <input
                             type="password"
                             id="password"
@@ -104,28 +104,25 @@ function Signup() {
                         />
                     </div>
 
-                    {/* Country Selection Dropdown */}
                     <div className="w-[85%]">
-    <label htmlFor="country" className="sr-only">Country</label>
-    <select
-        id="country"
-        name="country"
-        value={formData.country}
-        onChange={handleChange}
-        className="h-12 w-full rounded-lg px-4 border border-white/30 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-gray-300 backdrop-blur-md appearance-none"
-        required
-    >
-        <option value="" className="bg-white/20 text-gray-300">Select your country</option>
-        <option value="USA" className="bg-white/20 text-black">United States</option>
-        <option value="India" className="bg-white/20 text-black">India</option>
-        <option value="UK" className="bg-white/20 text-black">United Kingdom</option>
-        <option value="Germany" className="bg-white/20 text-black">Germany</option>
-        <option value="France" className="bg-white/20 text-black">France</option>
-        <option value="Canada" className="bg-white/20 text-black">Canada</option>
-        <option value="Australia" className="bg-white/20 text-black">Australia</option>
-    </select>
-</div>
-
+                        <select
+                            id="country"
+                            name="country"
+                            value={formData.country}
+                            onChange={handleChange}
+                            className="h-12 w-full rounded-lg px-4 border border-white/30 bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-gray-300 backdrop-blur-md appearance-none"
+                            required
+                        >
+                            <option value="" className="bg-white/20 text-gray-300">Select your country</option>
+                            <option value="USA" className="bg-white/20 text-black">United States</option>
+                            <option value="India" className="bg-white/20 text-black">India</option>
+                            <option value="UK" className="bg-white/20 text-black">United Kingdom</option>
+                            <option value="Germany" className="bg-white/20 text-black">Germany</option>
+                            <option value="France" className="bg-white/20 text-black">France</option>
+                            <option value="Canada" className="bg-white/20 text-black">Canada</option>
+                            <option value="Australia" className="bg-white/20 text-black">Australia</option>
+                        </select>
+                    </div>
 
                     <button
                         type="submit"
