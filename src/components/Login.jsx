@@ -1,67 +1,69 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const imgURL = "https://cdn.pixabay.com/photo/2019/06/14/09/57/scrabble-4273254_1280.jpg"; 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate(); 
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError(""); // Clear previous error messages
 
-        const response = await fetch("http://localhost:8080/user/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        try {
+            const response = await fetch("http://localhost:8080/user/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-        const data = await response.json();
-        
-        if (response.ok) {
-            
-            
-            // Store user data in localStorage or state if needed
-            localStorage.setItem("user", JSON.stringify(data));
+            const data = await response.json();
 
-            // Redirect to home page
-            navigate("/"); 
-        } else {
-            alert(data.message || "Invalid email or password!");
+            if (response.ok) {
+                // Store username in localStorage
+                localStorage.setItem("username", data.username);
+                navigate("/"); // Redirect to home page
+            } else {
+                setError(data.message || "Invalid email or password!");
+            }
+        } catch (error) {
+            setError("Something went wrong. Please try again.");
         }
     };
 
     return (
         <div 
-            className="h-screen w-screen flex justify-center items-center relative"
+            className="h-screen w-screen flex justify-center items-center relative px-4"
             style={{
                 backgroundImage: `url(${imgURL})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
         >
-            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
 
-            <div className="relative z-10 h-[65%] w-[30%] max-w-[450px] rounded-xl bg-white/10 backdrop-blur-xl shadow-2xl flex flex-col justify-center items-center gap-6 p-8 border border-white/20">
+            <div className="relative z-10 w-full max-w-[400px] rounded-xl bg-white/10 backdrop-blur-xl shadow-2xl flex flex-col justify-center items-center gap-6 p-8 border border-white/20">
                 <h2 className="text-2xl font-semibold text-white">Welcome Back</h2>
 
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+
                 <form className="w-full flex flex-col items-center gap-5" onSubmit={handleLogin}>
-                    <div className="w-[85%]">
-                        <label htmlFor="email" className="sr-only">Email</label>
+                    <div className="w-full">
+                        <label htmlFor="email" className="block text-white mb-1">Email</label>
                         <input
                             type="email"
                             id="email"
-                            placeholder="Enter your registered e-mail"
+                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="h-12 w-full rounded-lg px-4 border border-gray-300 bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-md placeholder-gray-300"
                         />
                     </div>
-                    <div className="w-[85%]">
-                        <label htmlFor="password" className="sr-only">Password</label>
+                    <div className="w-full">
+                        <label htmlFor="password" className="block text-white mb-1">Password</label>
                         <input
                             type="password"
                             id="password"
@@ -74,7 +76,7 @@ function Login() {
 
                     <button
                         type="submit"
-                        className="h-12 w-[85%] bg-yellow-400 text-black font-semibold rounded-lg hover:bg-black hover:text-white active:bg-gray-400 shadow-md transition-all"
+                        className="h-12 w-full bg-yellow-400 text-black font-semibold rounded-lg hover:bg-black hover:text-white active:bg-gray-400 shadow-md transition-all"
                     >
                         Login
                     </button>
