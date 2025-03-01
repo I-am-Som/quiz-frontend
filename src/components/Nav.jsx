@@ -42,12 +42,10 @@ function Nav() {
             </div>
 
             {/* User Profile/Login Section */}
-            <Link
-                to="/login"
-                className="h-full flex justify-center items-center p-3 font-semibold text-slate-800 hover:bg-yellow-400 hover:text-slate-700 active:bg-slate-950 transition-all ml-auto"
-            >
+            <span>
                 {user}
-            </Link>
+            </span>
+            
         </nav>
     );
 }
