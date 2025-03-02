@@ -6,6 +6,7 @@ function CreateQuiz() {
   const [category, setCategory] = useState("");
   const [numQuestions, setNumQuestions] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
+  const [timeLimit, setTimeLimit] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -16,19 +17,19 @@ function CreateQuiz() {
     if (!quizTitle) newErrors.quizTitle = "Quiz Title is required";
     if (!category) newErrors.category = "Category is required";
     if (!numQuestions || numQuestions < 1) newErrors.numQuestions = "Number of Questions must be at least 1";
+    if (!timeLimit || timeLimit < 1) newErrors.timeLimit = "Time limit must be at least 1 minute";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    console.log({ quizTitle, category, numQuestions, difficulty });
+    console.log({ quizTitle, category, numQuestions, difficulty, timeLimit });
     navigate("/");
   };
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-      {/* Main Content */}
       <div className="max-w-2xl mx-auto w-full bg-white p-8 rounded-xl shadow-lg border border-gray-100">
         <button
           onClick={() => navigate(-1)}
@@ -47,10 +48,7 @@ function CreateQuiz() {
               value={quizTitle}
               onChange={(e) => setQuizTitle(e.target.value)}
               placeholder="Enter quiz title"
-              required
-              className={`w-full px-4 py-3 bg-gray-50 border ${
-                errors.quizTitle ? "border-red-500" : "border-gray-200"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 bg-gray-50 border ${errors.quizTitle ? "border-red-500" : "border-gray-200"} rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
             />
             {errors.quizTitle && <p className="text-red-500 text-sm mt-2">{errors.quizTitle}</p>}
           </div>
@@ -61,10 +59,7 @@ function CreateQuiz() {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Enter category"
-              required
-              className={`w-full px-4 py-3 bg-gray-50 border ${
-                errors.category ? "border-red-500" : "border-gray-200"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 bg-gray-50 border ${errors.category ? "border-red-500" : "border-gray-200"} rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
             />
             {errors.category && <p className="text-red-500 text-sm mt-2">{errors.category}</p>}
           </div>
@@ -75,10 +70,7 @@ function CreateQuiz() {
               value={numQuestions}
               onChange={(e) => setNumQuestions(e.target.value)}
               placeholder="Enter number of questions"
-              required
-              className={`w-full px-4 py-3 bg-gray-50 border ${
-                errors.numQuestions ? "border-red-500" : "border-gray-200"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 bg-gray-50 border ${errors.numQuestions ? "border-red-500" : "border-gray-200"} rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
             />
             {errors.numQuestions && <p className="text-red-500 text-sm mt-2">{errors.numQuestions}</p>}
           </div>
@@ -93,6 +85,17 @@ function CreateQuiz() {
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">Time Limit (minutes)</label>
+            <input
+              type="number"
+              value={timeLimit}
+              onChange={(e) => setTimeLimit(e.target.value)}
+              placeholder="Enter time limit in minutes"
+              className={`w-full px-4 py-3 bg-gray-50 border ${errors.timeLimit ? "border-red-500" : "border-gray-200"} rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all`}
+            />
+            {errors.timeLimit && <p className="text-red-500 text-sm mt-2">{errors.timeLimit}</p>}
           </div>
           <button
             type="submit"
