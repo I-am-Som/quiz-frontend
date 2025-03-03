@@ -3,12 +3,19 @@ import { useState, useEffect } from "react";
 
 function Nav() {
     const [user, setUser] = useState("User");
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("username");
         if (storedUser) setUser(storedUser);
     }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("username");
+        setUser("User");
+        // Redirect logic if needed
+    };
 
     return (
         <nav className="w-full h-16 fixed top-0 left-0 flex justify-between items-center px-8 bg-yellow-500 z-10">
@@ -24,11 +31,7 @@ function Nav() {
 
             {/* Navigation Links */}
             <div className="hidden md:flex h-full items-center space-x-6">
-                {[
-                    { to: "/", label: "Home" },
-                    { to: "/searchquiz", label: "Quiz Cards" },
-                    { to: "/savedquizzes", label: "Saved Quizzes" }
-                ].map((item) => (
+                {[{ to: "/", label: "Home" }, { to: "/searchquiz", label: "Quiz Cards" }, { to: "/savedquizzes", label: "Saved Quizzes" }].map((item) => (
                     <Link
                         key={item.to}
                         to={item.to}
@@ -41,11 +44,19 @@ function Nav() {
                 ))}
             </div>
 
-            {/* User Profile/Login Section */}
-            <span>
-                {user}
-            </span>
-            
+            {/* User Profile Dropdown */}
+            <div className="relative">
+                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="text-white font-semibold focus:outline-none">
+                    {user}
+                </button>
+                {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2">
+                        <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</Link>
+                        <Link to="/about" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">About</Link>
+                        <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200">Logout</button>
+                    </div>
+                )}
+            </div>
         </nav>
     );
 }
