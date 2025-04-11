@@ -29,7 +29,7 @@ function Nav() {
                 </span>
             </div>
 
-            {/* Navigation Links */}
+            {/* Navigation Links........... */}
             <div className="hidden md:flex h-full items-center space-x-6">
                 {[{ to: "/", label: "Home" }, { to: "/searchquiz", label: "Quiz Cards" }, { to: "/savedquizzes", label: "Saved Quizzes" }].map((item) => (
                     <Link
@@ -44,7 +44,7 @@ function Nav() {
                 ))}
             </div>
 
-            {/* User Profile Dropdown............. */}
+            {/* User Profile Dropdown */}
             <div className="relative">
                 <button onClick={() => setDropdownOpen(!dropdownOpen)} className="text-white font-semibold focus:outline-none">
                     {user}
