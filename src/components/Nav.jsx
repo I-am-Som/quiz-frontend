@@ -44,7 +44,7 @@ function Nav() {
                 ))}
             </div>
 
-            {/* User Profile Dropdown */}
+            {/* User Profile Dropdown............. */}
             <div className="relative">
                 <button onClick={() => setDropdownOpen(!dropdownOpen)} className="text-white font-semibold focus:outline-none">
                     {user}
